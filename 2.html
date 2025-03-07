@@ -94,34 +94,30 @@
     // TODO 1
     // Given an array of possible answers, a correct answer value, and a number of choices to get,
     // return a list of that many choices, including the correct answer and others from the array
-    function getMultipleChoices(numberOfChoices, correctAnswer, possibleChoices) {
+    function getMultipleChoices(n, correctAnswer, array) {
         // Use a while loop and the getRandomElement() function
         // Make sure there are no duplicates in the array
-        const choices = [];
-        choices.push(correctAnswer);
-        
-        while(choices.length < numberOfChoices){
-            let choiceCandidate = (getRandomElement(possibleChoices))       
-            if (!choices.includes(choiceCandidate))
-                {
-                choices.push(choiceCandidate)   
-                }
+        const choices = [correctAnswer];
+        while (choices.length < n) {
+            let candidate = getRandomElement(array);
+            if (choices.indexOf(candidate) < 0) { // check if this is already in the array
+                choices.push(candidate); // if not, add it
             }
-            return shuffleArray(choices);
+        }
+        return shuffleArray(choices);
     }
+
+    
     // TODO 2
     // Given a URL such as "https://images.dog.ceo/breeds/poodle-standard/n02113799_2280.jpg"
     // return the breed name string as formatted in the breed list, e.g. "standard poodle"
     function getBreedFromURL(url) {
-        let splitter = url.split("/")[4]
-        // let breedPart = splitter[4]
-        // let splitBreed = breedPart.split("-")
-        let [breed, subBreed] = splitter.split("-");
-        return [subBreed, breed].join(" ").trim();
-
         // The string method .split(char) may come in handy
         // Try to use destructuring as much as you can
-        
+        const [,path] = url.split("/breeds/");
+        const [breedID] = path.split("/");
+        const [breed, subtype] = breedID.split("-");
+        return [subtype, breed].join(" ");
     }
 
 
@@ -131,11 +127,9 @@
     // then parse the response as a JSON object,
     // finally return the "message" property of its body
     async function fetchMessage(url) {
-        const response = await fetch(url)
-        const body = await response.json();
-        const {message} = body; 
-        return message;
-        
+        const response = await fetch(url);  // Fetch the resource at the given URL
+        const {message} = await response.json(); // Parse the response as JSON & remember its 'message' value
+        return message; // Return the message
     }
 
 
@@ -197,10 +191,10 @@
     // TODO 5
     // Asynchronously call the loadQuizData() function,     
     // Then call renderQuiz() with the returned imageUrl, correctAnswer, and choices 
+    const [imgUrl, correctAnswer, choices] = await loadQuizData();
+    renderQuiz(imgUrl, correctAnswer, choices);
     
-    
-        const [imgUrl, correctAnswer, choices] = await loadQuizData();
-        renderQuiz(imgUrl, correctAnswer, choices);
+
 
   </script>
 </html>
