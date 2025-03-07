@@ -97,28 +97,33 @@
     function getMultipleChoices(numberOfChoices, correctAnswer, possibleChoices) {
         // Use a while loop and the getRandomElement() function
         // Make sure there are no duplicates in the array
-        
         const choices = [];
         choices.push(correctAnswer);
         
         while(choices < numberOfChoices){
             let choiceCandidate = (getRandomElement(possibleChoices))       
-            if (!choices.includes(choiceCandidate))}
-            choices.push()   
-        }
-        return shuffleArray(choices);
-
+            if (!choices.includes(choiceCandidate))
+                {
+                choices.push(choiceCandidate)   
+                }
+                return shuffleArray(choices);
+            }
     }
-
-    
     // TODO 2
     // Given a URL such as "https://images.dog.ceo/breeds/poodle-standard/n02113799_2280.jpg"
     // return the breed name string as formatted in the breed list, e.g. "standard poodle"
     function getBreedFromURL(url) {
+        let splitter = url.split("/")[4]
+        // let breedPart = splitter[4]
+        // let splitBreed = breedPart.split("-")
+        let [breed, subBreed] = splitter.split("-");
+        return [subBreed, breed].join(" ").trim();
+
         // The string method .split(char) may come in handy
         // Try to use destructuring as much as you can
         
     }
+    getBreedFromURL("https://images.dog.ceo/breeds/poodle-standard/n02113799_2280.jpg")
 
 
 
@@ -127,6 +132,10 @@
     // then parse the response as a JSON object,
     // finally return the "message" property of its body
     async function fetchMessage(url) {
+        const response = await fetch(url)
+        const body = await response.json();
+        const {message} = body; 
+        return message;
         
     }
 
